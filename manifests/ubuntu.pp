@@ -20,7 +20,7 @@ class datadog_agent::ubuntu(
   if !$::datadog_agent::skip_apt_key_trusting {
     exec { 'remove_old_key':
       command => "/usr/bin/apt-key del ${old_apt_key}",
-      unless  => "/usr/bin/apt-key list | grep ${old_apt_key} | grep expired"
+      unless  => "/usr/bin/apt-key list | grep ${old_apt_key} | grep expired",
       before  => File['/etc/apt/sources.list.d/datadog.list'],
     }
     exec { 'datadog_key':
