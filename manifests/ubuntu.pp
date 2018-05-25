@@ -11,12 +11,18 @@
 # Sample Usage:
 #
 class datadog_agent::ubuntu(
-  $apt_key = '382E94DE'
+  $apt_key = '382E94DE',
+  $old_apt_key = 'C7A7DA52'
 ) {
 
   ensure_packages(['apt-transport-https'])
 
   if !$::datadog_agent::skip_apt_key_trusting {
+    exec { 'remove_old_key':
+      command => "/usr/bin/apt-key del ${old_apt_key}",
+      unless  => "/usr/bin/apt-key list | grep ${old_apt_key} | grep expired"
+      before  => File['/etc/apt/sources.list.d/datadog.list'],
+    }
     exec { 'datadog_key':
       command => "/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${apt_key}",
       unless  => "/usr/bin/apt-key list | grep ${apt_key} | grep expires",
