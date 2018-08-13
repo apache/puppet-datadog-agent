@@ -201,6 +201,7 @@ class datadog_agent(
   $proxy_port = '',
   $proxy_user = '',
   $proxy_password = '',
+  $process_agent_enabled = true,
   $graphite_listen_port = '',
   $extra_template = '',
   $ganglia_host = '',
@@ -250,6 +251,7 @@ class datadog_agent(
   validate_string($proxy_port)
   validate_string($proxy_user)
   validate_string($proxy_password)
+  validate_bool($process_agent_enabled)
   validate_string($graphite_listen_port)
   validate_string($extra_template)
   validate_string($ganglia_host)
